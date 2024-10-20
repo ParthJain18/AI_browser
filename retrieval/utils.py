@@ -8,7 +8,7 @@ def load_logs(log_path):
 def preprocess_logs(logs):
     preprocessed_logs = []
     for log in logs:
-        chunk = f"User visited '{log['title']}' at {log['url']} and performed {', '.join(log['actions'])}."
+        chunk = f"User visited '{log['title']}' at {log['url']} with the following content: {log['text']}."
         preprocessed_logs.append(chunk)
     return preprocessed_logs
 
@@ -18,6 +18,3 @@ def save_metadata(processed_logs, metadata, metadata_path):
 
     with open(metadata_path, 'w') as f:
         json.dump(metadata, f)
-
-def generate_response(user_query, context):
-    return f"Success for {user_query} and context: {context}"

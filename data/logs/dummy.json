@@ -1,5 +1,6 @@
 [
-    {"timestamp": "2023-10-18T14:30:00Z", "url": "https://example.com/ai-news", "text": "AI is transforming industries."},
-    {"timestamp": "2023-10-18T15:00:00Z", "url": "https://example.com/blockchain", "text": "Blockchain is revolutionizing finance."}
+    {"timestamp": "2023-10-18T14:30:00Z", "title": "AI", "url": "https://example.com/ai-news", "text": "AI is transforming industries."},
+    {"timestamp": "2023-10-18T15:00:00Z", "title": "Blockchain", "url": "https://example.com/blockchain", "text": "Blockchain is revolutionizing finance."},
+    {"timestamp": "2023-10-18T15:30:00Z", "title": "IOT", "url": "https://example.com/iot", "text": "IoT devices are connecting the world."}
   ]
   
