@@ -10,7 +10,7 @@ def get_response(data, context):
         messages=[
             {
                 "role": "system",
-                "content": f"""You are a RAG agent. Your job is to answer user queries regarding their browsing activities. You must respond in a JSON format of this structure:
+                "content": f"""You are a RAG (Retrieval Augmented Generation) agent. Your job is to answer user queries regarding their browsing activities. You must respond in a JSON format of this structure:
                         {{
                             "response":"text"
                         }}

@@ -1,5 +1,6 @@
 VECTOR_DB_PATH = "data/vector_db/index.faiss"
 METADATA_PATH = "data/vector_db/vector_metadata.json"
 LOGS_PATH = "data/logs/dummy.json"
+SCREENSHOTS_PATH = "data/screenshots"
 EMBEDDING_MODEL = "all-MiniLM-L6-v2"
 GROQ_API_KEY= "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"

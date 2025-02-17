@@ -2,9 +2,11 @@ from sentence_transformers import SentenceTransformer
 import faiss
 import numpy as np
 import json
+import base64
+from datetime import datetime
 import os
 from retrieval.utils import load_logs, preprocess_logs
-from config import EMBEDDING_MODEL, VECTOR_DB_PATH, METADATA_PATH, LOGS_PATH
+from config import EMBEDDING_MODEL, VECTOR_DB_PATH, METADATA_PATH, LOGS_PATH, SCREENSHOTS_PATH
 import uuid
 
 model = SentenceTransformer(EMBEDDING_MODEL)
@@ -28,6 +30,20 @@ def create_or_load_vector_db():
 
     return index, metadata
 
+def save_screenshot(screenshot_data: str, log_id: str) -> str:
+    
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    filename = f"{log_id}_{timestamp}.png"
+    filepath = os.path.join(SCREENSHOTS_PATH, filename)
+    
+    if 'base64,' in screenshot_data:
+        screenshot_data = screenshot_data.split('base64,')[1]
+    
+    with open(filepath, 'wb') as f:
+        f.write(base64.b64decode(screenshot_data))
+    
+    return filepath
+
 def add_logs_to_vector_db(new_logs: list[dict], index, metadata):
 
     raw_logs = [{key: value for key, value in log.items() if key != 'screenshot'} for log in new_logs]
@@ -48,8 +64,17 @@ def add_logs_to_vector_db(new_logs: list[dict], index, metadata):
 
     index.add(np.array(new_embeddings))
 
-    new_metadata = [{'id': str(uuid.uuid4()), 'chunk': chunk, 'embedding': embedding.tolist(), 'raw': raw, 'screenshot': screenshot} 
-                    for chunk, embedding, raw, screenshot in zip(preprocessed_logs, new_embeddings, raw_logs, screenshots)]
+    new_metadata = []
+    for chunk, embedding, raw, screenshot in zip(preprocessed_logs, new_embeddings, raw_logs, screenshots):
+        log_id = str(uuid.uuid4())
+        screenshot_path = save_screenshot(screenshot, log_id)
+        new_metadata.append({
+            'id': log_id,
+            'chunk': chunk,
+            'embedding': embedding.tolist(),
+            'raw': raw,
+            'screenshot_path': screenshot_path
+        })
 
     metadata.extend(new_metadata)
 
